@@ -1,0 +1,51 @@
+# Configuration for TCC8031_EVM
+
+CTL{reset}="mixer"
+CTL{name}="PLL Input Clock", CTL{value}="1"
+CTL{name}="Sync Domain 1 fs", CTL{value}="5"
+CTL{name}="Sync Domain 1 BICK", CTL{value}="0"
+CTL{name}="CODEC Sync Domain", CTL{value}="1"
+CTL{name}="ADC1 Sync Domain", CTL{value}="1"
+CTL{name}="CODEC Sampling Frequency", CTL{value}="7"
+
+CTL{name}="LRCK2/SDOUT3 Pin BICK2/SDIN3 Pin Setting", CTL{value}="1"
+
+CTL{name}="ADCM MUX", CTL{value}="1"
+CTL{name}="AIN1 Lch MUX", CTL{value}="0"
+CTL{name}="AIN1 Rch MUX", CTL{value}="0"
+CTL{name}="MicBias1 MUX", CTL{value}="1"
+CTL{name}="MicBias2 MUX", CTL{value}="1"
+
+CTL{name}="ADC1 Digital Volume L", CTL{value}="255"
+CTL{name}="ADC1 Digital Volume R", CTL{value}="0"
+
+CTL{name}="MixerB Ch1 Source Selector", CTL{value}="14"
+CTL{name}="MixerB Ch2 Source Selector", CTL{value}="16"
+CTL{name}="MixerB Input2 Data Change", CTL{value}="3"
+CTL{name}="MixerB Sync Domain", CTL{value}="1"
+
+CTL{name}="SDOUT1 Source Selector", CTL{value}="18"
+CTL{name}="SDOUT1 Output Enable", CTL{value}="1"
+CTL{name}="ADC1 Mute", CTL{value}="0"
+CTL{name}="ADCM Mute", CTL{value}="0"
+
+
+CTL{name}="DAC1 Source Selector", CTL{value}="1"
+CTL{name}="DAC2 Source Selector", CTL{value}="9"
+CTL{name}="DAC3 Source Selector", CTL{value}="1"
+
+CTL{name}="DAC1 Mute", CTL{value}="0"
+CTL{name}="DAC2 Mute", CTL{value}="0"
+CTL{name}="DAC3 Mute", CTL{value}="0"
+
+CTL{name}="DAC1 Digital Volume L", CTL{value}="200"
+CTL{name}="DAC1 Digital Volume R", CTL{value}="200"
+                                                   
+CTL{name}="DAC2 Digital Volume L", CTL{value}="200"
+CTL{name}="DAC2 Digital Volume R", CTL{value}="200"
+                                                   
+CTL{name}="DAC3 Digital Volume L", CTL{value}="200"
+CTL{name}="DAC3 Digital Volume R", CTL{value}="200"
+
+
+RESULT="true", EXIT="return"

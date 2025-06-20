@@ -1,0 +1,81 @@
+From 72ae1c5a734fa1773de85bfda373686eca7ccd82 Mon Sep 17 00:00:00 2001
+From: RH Kim <rh.kim@telechips.com>
+Date: Tue, 1 Nov 2022 15:12:26 +0900
+Subject: [PATCH 3/3] weston: enable background alpha blending for tcc
+
+Change-Id: I8352abeb94cdad46fe175ea7fabe3ae0e6331371
+---
+ clients/desktop-shell.c             |  2 +-
+ libweston/backend-drm/drm-gbm.c     |  2 +-
+ libweston/backend-drm/drm.c         |  2 +-
+ libweston/renderer-gl/gl-renderer.c | 15 ++++++++++++++-
+ 4 files changed, 17 insertions(+), 4 deletions(-)
+
+diff --git a/clients/desktop-shell.c b/clients/desktop-shell.c
+index fb53069..0bea885 100644
+--- a/clients/desktop-shell.c
++++ b/clients/desktop-shell.c
+@@ -1160,7 +1160,7 @@ background_create(struct desktop *desktop, struct output *output)
+ 	background->widget = window_add_widget(background->window, background);
+ 	window_set_user_data(background->window, background);
+ 	widget_set_redraw_handler(background->widget, background_draw);
+-	widget_set_transparent(background->widget, 0);
++	widget_set_transparent(background->widget, 1);
+ 
+ 	s = weston_config_get_section(desktop->config, "shell", NULL, NULL);
+ 	weston_config_section_get_string(s, "background-image",
+diff --git a/libweston/backend-drm/drm-gbm.c b/libweston/backend-drm/drm-gbm.c
+index d0a4c6c..fcfc4ed 100644
+--- a/libweston/backend-drm/drm-gbm.c
++++ b/libweston/backend-drm/drm-gbm.c
+@@ -295,7 +295,7 @@ drm_output_render_gl(struct drm_output_state *state, pixman_region32_t *damage)
+ 	}
+ 
+ 	/* The renderer always produces an opaque image. */
+-	ret = drm_fb_get_from_bo(bo, b, true, BUFFER_GBM_SURFACE);
++	ret = drm_fb_get_from_bo(bo, b, false, BUFFER_GBM_SURFACE);
+ 	if (!ret) {
+ 		weston_log("failed to get drm_fb for bo\n");
+ 		gbm_surface_release_buffer(output->gbm_surface, bo);
+diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
+index 4278770..058bc6e 100644
+--- a/libweston/backend-drm/drm.c
++++ b/libweston/backend-drm/drm.c
+@@ -3016,7 +3016,7 @@ drm_backend_create(struct weston_compositor *compositor,
+ 
+ 	compositor->backend = &b->base;
+ 
+-	if (parse_gbm_format(config->gbm_format, DRM_FORMAT_XRGB8888, &b->gbm_format) < 0)
++	if (parse_gbm_format(config->gbm_format, DRM_FORMAT_ARGB8888, &b->gbm_format) < 0)
+ 		goto err_compositor;
+ 
+ 	/* Check if we run drm-backend using weston-launch */
+diff --git a/libweston/renderer-gl/gl-renderer.c b/libweston/renderer-gl/gl-renderer.c
+index 3485d35..cd918eb 100644
+--- a/libweston/renderer-gl/gl-renderer.c
++++ b/libweston/renderer-gl/gl-renderer.c
+@@ -1066,7 +1066,20 @@ draw_paint_node(struct weston_paint_node *pnode,
+ 	if (ensure_surface_buffer_is_ready(gr, gs) < 0)
+ 		goto out;
+ 
+-	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
++
++	if(pnode->view->layer_link.layer != NULL) {
++		if(pnode->view->layer_link.layer->position == WESTON_LAYER_POSITION_BACKGROUND)
++		{
++			(void)glBlendFunc(GL_ONE, GL_SRC_ALPHA);
++		}
++		else
++		{
++			(void)glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
++		}
++	}
++	else {
++		(void)glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
++	}
+ 
+ 	if (pnode->view->transform.enabled || pnode->output->zoom.active ||
+ 	    pnode->output->current_scale != pnode->surface->buffer_viewport.buffer.scale)
+-- 
+2.25.1
+

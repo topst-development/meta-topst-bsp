@@ -1,0 +1,88 @@
+From 3b39f0c29fee8b95d7890b8019b43637483fb3f7 Mon Sep 17 00:00:00 2001
+From: Wily Taekhyun Shin <thshin@telechips.com>
+Date: Tue, 28 Nov 2023 13:48:00 +0900
+Subject: [PATCH] Change makefile for YP Fix build error when using kernel 5.10
+
+---
+ Makefile        | 39 +++++++++++++++++++++------------------
+ compatibility.h |  4 ----
+ 2 files changed, 21 insertions(+), 22 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 500f1e1..cd97817 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,34 +1,37 @@
+-#
+-#
+-#
++ifneq ($(KERNELRELEASE),)
+ 
+-TARGET := r8152.ko
+-CONFIG_CTAP_SHORT = ON
++# This part of the Makefile is used when called by the kernel build system
++# and defines the modules to be built.
+ 
+ obj-m	 := r8152.o
++
++else # KERNELRELEASE
++CONFIG_CTAP_SHORT = ON
++
+ #	EXTRA_CFLAGS += -DRTL8152_S5_WOL
+ #	EXTRA_CFLAGS += -DRTL8152_DEBUG
+ ifneq (,$(filter OFF off, $(CONFIG_CTAP_SHORT)))
+ 	EXTRA_CFLAGS += -DCONFIG_CTAP_SHORT_OFF
+ endif
+ 
+-.PHONY: all
+-all: modules spk_su
++KERNELDIR ?= /lib/modules/$(shell uname -r)/build
++PWD := $(shell pwd)
+ 
+-.PHONY: modules
+-modules: $(TARGET)
++default: modules
+ 
+-$(TARGET):
+-	$(MAKE) -C $(KSRC) M=$(PWD) modules
++modules:
++	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
+ 
+-spk_su: spk_su.c
+-	$(CROSS_COMPILE)cc -std=c99 -o $(@) $(<)
++modules_install:
++	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules_install
+ 
+-.PHONY: clean
+ clean:
+ 	rm -rf *.o $(TARGET)
+ 
+-.PHONY: install
+-install: $(TARGET) spk_su
+-	mkdir -p $(DESTDIR)/r8152/
+-	install $(^) $(DESTDIR)/r8152/
++%.i: %.c
++	$(MAKE) -C $(KERNELDIR) M=$(PWD) $@
++
++%.o: %.c
++	$(MAKE) -C $(KERNELDIR) M=$(PWD) $@
++
++endif # KERNELRELEASE
+diff --git a/compatibility.h b/compatibility.h
+index 06d7545..a53a582 100644
+--- a/compatibility.h
++++ b/compatibility.h
+@@ -688,10 +688,6 @@
+ #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,8,0) */
+ #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,9,0) */
+ #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,12,0) */
+-	static inline void eth_hw_addr_set(struct net_device *dev, const u8 *addr)
+-	{
+-		memcpy(dev->dev_addr, addr, 6);
+-	}
+ #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,15,0) */
+ #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,19,0) */
+ 
+-- 
+2.25.1
+

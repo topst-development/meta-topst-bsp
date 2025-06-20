@@ -1,0 +1,39 @@
+From 53e31415e8ac090770825a42911da4918120877a Mon Sep 17 00:00:00 2001
+From: Brendan King <Brendan.King@imgtec.com>
+Date: Tue, 4 Sep 2018 14:59:09 +0100
+Subject: [PATCH 2/3] backend-drm: disable "bo geometry out of bounds" message
+
+Disable the "bo geometry out of bounds" message from
+drm_fb_get_from_dmabuf.
+
+The message was being printed repeatedly whilst running an opaque
+windowed application, when drm_fb_get_from_dmabuf was called by
+drm_output_prepare_overlay_view, via drm_fb_get_from_view. The
+errors were being printed because the application wasn't within
+the framebuffer dimension limits.
+
+An alternative fix would be to delay calling drm_fb_get_from_view
+from drm_output_prepare_overlay_view until an overlay plane had been
+found. This would eliminate the messages if the display had no
+overlay planes, but wouldn't help if there were such planes.
+---
+ libweston/backend-drm/fb.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/libweston/backend-drm/fb.c b/libweston/backend-drm/fb.c
+index e7349c4b..da781015 100644
+--- a/libweston/backend-drm/fb.c
++++ b/libweston/backend-drm/fb.c
+@@ -343,7 +343,9 @@ drm_fb_get_from_dmabuf(struct linux_dmabuf_buffer *dmabuf,
+ 	    fb->width > backend->max_width ||
+ 	    backend->min_height > fb->height ||
+ 	    fb->height > backend->max_height) {
++#if 0
+ 		weston_log("bo geometry out of bounds\n");
++#endif
+ 		goto err_free;
+ 	}
+ 
+-- 
+2.17.1
+

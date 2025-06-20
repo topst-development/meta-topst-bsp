@@ -1,0 +1,61 @@
+From dda3a72c77657a3b88c45d756f34008561bb2671 Mon Sep 17 00:00:00 2001
+From: YoungJun <youngjun@telechips.com>
+Date: Wed, 14 Jun 2023 11:58:45 +0900
+Subject: [PATCH] [feat] gl-renderer: support yuv color space and range
+
+ - When processing YUV format, it processes the flags passed from the
+   protocol for color space and range. bt709 and bt2020 are processed
+   with the same color space, and full range and limited range are
+   distinguished.
+ - If no flags are passed, the appropriate color space and range are set
+   according to the content size, as handled by the existing GPU DDK.
+
+Change-Id: I102c47981d8ec3d007f6788fcda2060ae8600f92
+---
+ libweston/renderer-gl/gl-renderer.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/libweston/renderer-gl/gl-renderer.c b/libweston/renderer-gl/gl-renderer.c
+index cd918eb..839dacd 100644
+--- a/libweston/renderer-gl/gl-renderer.c
++++ b/libweston/renderer-gl/gl-renderer.c
+@@ -2249,7 +2249,7 @@ import_simple_dmabuf(struct gl_renderer *gr,
+                      struct dmabuf_attributes *attributes)
+ {
+ 	struct egl_image *image;
+-	EGLint attribs[52];
++	EGLint attribs[62];
+ 	int atti = 0;
+ 	bool has_modifier;
+ 
+@@ -2338,6 +2338,16 @@ import_simple_dmabuf(struct gl_renderer *gr,
+ 		}
+ 	}
+ 
++	if (attributes->flags & ZWP_LINUX_BUFFER_PARAMS_V1_FLAGS_COLOR_BT709) {
++		attribs[atti++] = EGL_YUV_COLOR_SPACE_HINT_EXT;
++		attribs[atti++] = EGL_ITU_REC709_EXT;
++	}
++
++	if (attributes->flags & ZWP_LINUX_BUFFER_PARAMS_V1_FLAGS_COLOR_FULLRANGE) {
++		attribs[atti++] = EGL_SAMPLE_RANGE_HINT_EXT;
++		attribs[atti++] = EGL_YUV_FULL_RANGE_EXT;
++	}
++
+ 	attribs[atti++] = EGL_NONE;
+ 
+ 	image = egl_image_create(gr, EGL_LINUX_DMA_BUF_EXT, NULL,
+@@ -2777,7 +2787,9 @@ gl_renderer_import_dmabuf(struct weston_compositor *ec,
+ 	}
+ 
+ 	/* reject all flags we do not recognize or handle */
+-	if (dmabuf->attributes.flags & ~ZWP_LINUX_BUFFER_PARAMS_V1_FLAGS_Y_INVERT)
++	if (dmabuf->attributes.flags & ~(ZWP_LINUX_BUFFER_PARAMS_V1_FLAGS_Y_INVERT |
++				ZWP_LINUX_BUFFER_PARAMS_V1_FLAGS_COLOR_FULLRANGE |
++				ZWP_LINUX_BUFFER_PARAMS_V1_FLAGS_COLOR_BT709))
+ 		return false;
+ 
+ 	image = import_dmabuf(gr, dmabuf);
+-- 
+2.25.1
+

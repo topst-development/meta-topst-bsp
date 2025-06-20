@@ -1,0 +1,9 @@
+{
+    "bconf.bin" : [{"storage" : "emmc", "area" : "boot0", "addr" : "0x00000000"}, {"storage" : "emmc", "area" : "boot1", "addr" : "0x00000000"}],
+    "mcert.bin" : [{"storage" : "emmc", "area" : "boot0", "addr" : "0x00000001"}, {"storage" : "emmc", "area" : "boot1", "addr" : "0x00000001"}],
+    "dram_params.bin" : [{"storage" : "emmc", "area" : "boot0", "addr" : "0x00000002"}, {"storage" : "emmc", "area" : "boot1", "addr" : "0x00000002"}],
+    "hsm.bin" : [{"storage" : "emmc", "area" : "boot0", "addr" : "0x00000008"}, {"storage" : "emmc", "area" : "boot1", "addr" : "0x00000008"}],
+    "ca53_bl1.rom" : [{"storage" : "emmc", "area" : "boot0", "addr" : "0x00000048"}, {"storage" : "emmc", "area" : "boot1", "addr" : "0x00000048"}],
+    "ca53_bl2.rom" : [{"storage" : "emmc", "area" : "boot0", "addr" : "0x000000141"}, {"storage" : "emmc", "area" : "boot1", "addr" : "0x000000141"}],
+    "optee.rom" : [{"storage" : "emmc", "area" : "boot0", "addr" : "0x00000021A"}, {"storage" : "emmc", "area" : "boot1", "addr" : "0x00000021A"}]
+}

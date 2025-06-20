@@ -1,0 +1,80 @@
+# Configuration for AK4602 on TCC_EVB
+
+CTL{reset}="mixer"
+CTL{name}="AK4602 PLL Reference Clock Frequency", CTL{value}="9"
+CTL{name}="AK4602 PLL Reference Clock Select", CTL{value}="1"
+CTL{name}="AK4602 CODEC Sampling Frequency", CTL{value}="7"
+CTL{name}="AK4602 CODEC Sync Domain", CTL{value}="1"
+CTL{name}="AK4602 Sync Domain 1 Clock Source", CTL{value}="3"
+CTL{name}="AK4602 Sync Domain 2 Clock Source", CTL{value}="4"
+CTL{name}="AK4602 Sync Domain 1 fs", CTL{value}="5"
+CTL{name}="AK4602 Sync Domain 2 fs", CTL{value}="5"
+CTL{name}="AK4602 Sync Domain 1 BICK fs", CTL{value}="0"
+CTL{name}="AK4602 Sync Domain 2 BICK fs", CTL{value}="0"
+
+CTL{name}="AK4602 SDIN1 TDM mode", CTL{value}="0"
+CTL{name}="AK4602 SDIN2 TDM mode", CTL{value}="0"
+CTL{name}="AK4602 SDIN3 TDM mode", CTL{value}="0"
+CTL{name}="AK4602 SDIN4 TDM mode", CTL{value}="0"
+CTL{name}="AK4602 SDIN1 Slot Length", CTL{value}="3"
+CTL{name}="AK4602 SDIN2 Slot Length", CTL{value}="3"
+CTL{name}="AK4602 SDIN3 Slot Length", CTL{value}="3"
+CTL{name}="AK4602 SDIN4 Slot Length", CTL{value}="3"
+
+CTL{name}="AK4602 SDOUT1 TDM mode", CTL{value}="0"
+CTL{name}="AK4602 SDOUT2 TDM mode", CTL{value}="0"
+CTL{name}="AK4602 SDOUT1 Slot Length", CTL{value}="3"
+CTL{name}="AK4602 SDOUT2 Slot Length", CTL{value}="3"
+
+CTL{name}="AK4602 BICK1/LRCK1 Pulled Down Enable", CTL{value}="0"
+CTL{name}="AK4602 BICK1/LRCK1 Master", CTL{value}="0"
+CTL{name}="AK4602 BICK2/LRCK2 Pulled Down Enable", CTL{value}="0"
+CTL{name}="AK4602 BICK2/LRCK2 Master", CTL{value}="0"
+
+CTL{name}="AK4602 SDIN1 BICK/LRCK", CTL{value}="1"
+CTL{name}="AK4602 SDIN2 BICK/LRCK", CTL{value}="1"
+CTL{name}="AK4602 SDIN3 BICK/LRCK", CTL{value}="1"
+CTL{name}="AK4602 SDIN4 BICK/LRCK", CTL{value}="1"
+
+CTL{name}="AK4602 BICK1 Sync Domain", CTL{value}="1"
+CTL{name}="AK4602 BICK2 Sync Domain", CTL{value}="2"
+
+CTL{name}="AK4602 SDOUT1 Sync Domain", CTL{value}="2"
+CTL{name}="AK4602 SDOUT2 Sync Domain", CTL{value}="2"
+CTL{name}="AK4602 ADC1 Sync Domain", CTL{value}="2"
+
+CTL{name}="AK4602 SDOUT1/DIT pin Setting", CTL{value}="0"
+
+CTL{name}="AK4602 ADC1 Input Select L", CTL{value}="1"
+CTL{name}="AK4602 ADC1 Input Select R", CTL{value}="1"
+CTL{name}="AK4602 ADC2 MUX", CTL{value}="1"
+CTL{name}="AK4602 SDOUT1A Source Selector", CTL{value}="46"
+CTL{name}="AK4602 SDOUT2A Source Selector", CTL{value}="1"
+
+CTL{name}="AK4602 ADC1 Mute", CTL{value}="0"
+CTL{name}="AK4602 ADC2 Mute", CTL{value}="0"
+
+CTL{name}="AK4602 ADC1 Digital Volume L", CTL{value}="255"
+CTL{name}="AK4602 ADC1 Digital Volume R", CTL{value}="0"
+
+CTL{name}="AK4602 ADC2 Digital Volume L", CTL{value}="207"
+CTL{name}="AK4602 ADC2 Digital Volume R", CTL{value}="207"
+
+CTL{name}="AK4602 DAC1 Source Selector", CTL{value}="1"
+CTL{name}="AK4602 DAC2 Source Selector", CTL{value}="9"
+CTL{name}="AK4602 DAC3 Source Selector", CTL{value}="17"
+
+CTL{name}="AK4602 DAC1 Mute", CTL{value}="0"
+CTL{name}="AK4602 DAC2 Mute", CTL{value}="0"
+CTL{name}="AK4602 DAC3 Mute", CTL{value}="0"
+
+CTL{name}="AK4602 DAC1 Digital Volume L", CTL{value}="200"
+CTL{name}="AK4602 DAC1 Digital Volume R", CTL{value}="200"
+
+CTL{name}="AK4602 DAC2 Digital Volume L", CTL{value}="200"
+CTL{name}="AK4602 DAC2 Digital Volume R", CTL{value}="200"
+
+CTL{name}="AK4602 DAC3 Digital Volume L", CTL{value}="200"
+CTL{name}="AK4602 DAC3 Digital Volume R", CTL{value}="200"
+
+RESULT="true", EXIT="return"

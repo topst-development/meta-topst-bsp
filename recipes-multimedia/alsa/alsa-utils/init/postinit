@@ -1,0 +1,9 @@
+CARDINFO{name}=="TCC8021 EVM Card", INCLUDE="tcc8021_evm", GOTO="postinit_end"
+CARDINFO{name}=="TCC8971 Battleship Card", INCLUDE="tcc8971_battleship", GOTO="postinit_end"
+CARDINFO{name}=="TCC8971 LCN2 Card", INCLUDE="tcc8971_lcn2", GOTO="postinit_end"
+CARDINFO{name}=="TCC8971 LCN3 Card", INCLUDE="tcc8971_lcn3", GOTO="postinit_end"
+CARDINFO{name}=="TCC8031 EVM Card", INCLUDE="tcc8030_evm", GOTO="postinit_end"
+CARDINFO{name}=="TCC805x EVM Card", INCLUDE="tcc8050_evm", GOTO="postinit_end"
+CARDINFO{name}=="TCC807x EVM Card", INCLUDE="tcc_evb_ak4602", GOTO="postinit_end"
+
+LABEL="postinit_end"

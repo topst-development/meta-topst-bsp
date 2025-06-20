@@ -1,0 +1,71 @@
+From 281ecf10d1c9a169fcd7b23a94751172f7255678 Mon Sep 17 00:00:00 2001
+From: Peter Hutterer <peter.hutterer@who-t.net>
+Date: Fri, 27 Mar 2020 19:37:10 +1000
+Subject: [PATCH] udev: don't use IMPORT+=
+
+IMPORT really only supports == and != and for a short while udevd warned about
+this before that warning was reverted again.
+
+Where anything else is used, it falls back to ==. systemd upstream rules all
+use a single = though, so let's stick with that to be consistent, even if it
+is technically wrong (udevd will warn about this in debug mode).
+
+See the long discussion in systemd upstream for details:
+https://github.com/systemd/systemd/issues/14062
+
+Fixes #461
+
+Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+---
+ test/litest.c                           | 2 +-
+ udev/80-libinput-device-groups.rules.in | 2 +-
+ udev/90-libinput-fuzz-override.rules.in | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/test/litest.c b/test/litest.c
+index 783c138..391c8e9 100644
+--- a/test/litest.c
++++ b/test/litest.c
+@@ -725,7 +725,7 @@ litest_init_device_udev_rules(struct litest_test_device *dev, FILE *f)
+ 	if (need_keyboard_builtin) {
+ 		fprintf(f, ""
+ 			"ATTRS{name}==\"litest %s*\","
+-			" IMPORT{builtin}+=\"keyboard\"\n",
++			" IMPORT{builtin}=\"keyboard\"\n",
+ 			dev->name);
+ 	}
+ 
+diff --git a/udev/80-libinput-device-groups.rules.in b/udev/80-libinput-device-groups.rules.in
+index f833153..1c40143 100644
+--- a/udev/80-libinput-device-groups.rules.in
++++ b/udev/80-libinput-device-groups.rules.in
+@@ -1,6 +1,6 @@
+ ACTION!="add|change", GOTO="libinput_device_group_end"
+ KERNEL!="event[0-9]*", GOTO="libinput_device_group_end"
+ 
+-ATTRS{phys}=="?*", IMPORT{program}+="@UDEV_TEST_PATH@libinput-device-group %S%p"
++ATTRS{phys}=="?*", IMPORT{program}="@UDEV_TEST_PATH@libinput-device-group %S%p"
+ 
+ LABEL="libinput_device_group_end"
+diff --git a/udev/90-libinput-fuzz-override.rules.in b/udev/90-libinput-fuzz-override.rules.in
+index fa1e3e7..81f76cd 100644
+--- a/udev/90-libinput-fuzz-override.rules.in
++++ b/udev/90-libinput-fuzz-override.rules.in
+@@ -15,12 +15,12 @@ KERNEL!="event*", GOTO="libinput_fuzz_override_end"
+ # about that.
+ ATTRS{capabilities/abs}!="0", \
+ 	ENV{ID_INPUT_TOUCHPAD}=="1", \
+-	IMPORT{program}+="@UDEV_TEST_PATH@libinput-fuzz-extract %S%p", \
++	IMPORT{program}="@UDEV_TEST_PATH@libinput-fuzz-extract %S%p", \
+ 	RUN{program}+="@UDEV_TEST_PATH@libinput-fuzz-to-zero %S%p", \
+ 	GOTO="libinput_fuzz_override_end"
+ ATTRS{capabilities/abs}!="0", \
+ 	ENV{ID_INPUT_TOUCHSCREEN}=="1", \
+-	IMPORT{program}+="@UDEV_TEST_PATH@libinput-fuzz-extract %S%p", \
++	IMPORT{program}="@UDEV_TEST_PATH@libinput-fuzz-extract %S%p", \
+ 	RUN{program}+="@UDEV_TEST_PATH@libinput-fuzz-to-zero %S%p", \
+ 	GOTO="libinput_fuzz_override_end"
+ 
+-- 
+1.9.3
+

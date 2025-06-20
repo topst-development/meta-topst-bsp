@@ -1,0 +1,3 @@
+#!/bin/sh
+
+OPTARGS="-Swayland-0"

@@ -1,0 +1,27 @@
+From 1f5a27bf3de3749e52510e50666f243970f1a701 Mon Sep 17 00:00:00 2001
+From: Peter Hutterer <peter.hutterer@who-t.net>
+Date: Sun, 29 Mar 2020 14:55:57 +1000
+Subject: [PATCH] tools: add libinput analyze to the libinput tool help output
+
+Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+---
+ tools/libinput-tool.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/tools/libinput-tool.c b/tools/libinput-tool.c
+index 21c1d0f..d619240 100644
+--- a/tools/libinput-tool.c
++++ b/tools/libinput-tool.c
+@@ -52,6 +52,9 @@ usage(void)
+ 	       "  measure <feature>\n"
+ 	       "	Measure various device properties. See the man page for more info\n"
+ 	       "\n"
++	       "  analyze <feature>\n"
++	       "	Analyze device events. See the man page for more info\n"
++	       "\n"
+ 	       "  record\n"
+ 	       "	Record event stream from a device node. See the man page for more info\n"
+ 	       "\n"
+-- 
+1.9.3
+

@@ -1,0 +1,103 @@
+From cd281b44ec9b0a32e921fe18f9d1631ee6379be1 Mon Sep 17 00:00:00 2001
+From: Wily Taekhyun Shin <thshin@telechips.com>
+Date: Thu, 27 Apr 2017 16:29:54 +0900
+Subject: [PATCH] add-set-pa-prop-media-role
+
+From: =?UTF-8?q?=EC=9E=84=EC=98=81=ED=98=84=28Lim=20Young=20Hyun=29?=
+ <limdh3@telechips.com>
+
+%% original patch: 0001-add-set-pa-prop-media-role.patch
+---
+ pulse/pcm_pulse.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
+
+diff --git a/pulse/pcm_pulse.c b/pulse/pcm_pulse.c
+index 2831743..9448c6f 100644
+--- a/pulse/pcm_pulse.c
++++ b/pulse/pcm_pulse.c
+@@ -34,6 +34,7 @@ typedef struct snd_pcm_pulse {
+ 	snd_pulse_t *p;
+ 
+ 	char *device;
++	char *role;
+ 
+ 	/* Since ALSA expects a ring buffer we must do some voodoo. */
+ 	size_t last_size;
+@@ -663,6 +664,7 @@ finish:
+ static int pulse_prepare(snd_pcm_ioplug_t * io)
+ {
+ 	pa_channel_map map;
++	pa_proplist *prop = NULL;
+ 	snd_pcm_pulse_t *pcm = io->private_data;
+ 	int err = 0, r;
+ 	unsigned c, d;
+@@ -697,9 +699,12 @@ static int pulse_prepare(snd_pcm_ioplug_t * io)
+ 
+ 	map.channels = pcm->ss.channels;
+ 
++	prop = pa_proplist_new();
++	pa_proplist_sets(prop, PA_PROP_MEDIA_ROLE, pa_locale_to_utf8(pcm->role));
++
+ 	if (io->stream == SND_PCM_STREAM_PLAYBACK)
+ 		pcm->stream =
+-		    pa_stream_new(pcm->p->context, "ALSA Playback", &pcm->ss, &map);
++		    pa_stream_new_with_proplist(pcm->p->context, "ALSA Playback", &pcm->ss, &map, prop);
+ 	else
+ 		pcm->stream =
+ 		    pa_stream_new(pcm->p->context, "ALSA Capture", &pcm->ss, &map);
+@@ -915,6 +920,7 @@ static int pulse_close(snd_pcm_ioplug_t * io)
+ 		pulse_free(pcm->p);
+ 
+ 	free(pcm->device);
++	free(pcm->role);
+ 	free(pcm);
+ 
+ 	return 0;
+@@ -1052,6 +1058,7 @@ SND_PCM_PLUGIN_DEFINE_FUNC(pulse)
+ 	snd_config_iterator_t i, next;
+ 	const char *server = NULL;
+ 	const char *device = NULL;
++	const char *role = NULL;
+ 	const char *fallback_name = NULL;
+ 	int handle_underrun = DEFAULT_HANDLE_UNDERRUN;
+ 	int err;
+@@ -1094,6 +1101,13 @@ SND_PCM_PLUGIN_DEFINE_FUNC(pulse)
+ 			}
+ 			continue;
+ 		}
++		if (strcmp(id, "role") == 0) {
++			if (snd_config_get_string(n, &role) < 0) {
++				SNDERR("Invalid type for %s", id);
++				return -EINVAL;
++			}
++			continue;
++		}
+ 		SNDERR("Unknown field %s", id);
+ 		return -EINVAL;
+ 	}
+@@ -1114,6 +1128,14 @@ SND_PCM_PLUGIN_DEFINE_FUNC(pulse)
+ 		}
+ 	}
+ 
++	if (role) {
++		pcm->role = strdup(role);
++
++		if (!pcm->role) {
++			err = -ENOMEM;
++			goto error;
++		}
++	}
+ 	pcm->p = pulse_new();
+ 	if (!pcm->p) {
+ 		err = -EIO;
+@@ -1154,6 +1176,7 @@ error:
+ 		pulse_free(pcm->p);
+ 
+ 	free(pcm->device);
++	free(pcm->role);
+ 	free(pcm);
+ 
+ error2:
+-- 
+2.23.0
+

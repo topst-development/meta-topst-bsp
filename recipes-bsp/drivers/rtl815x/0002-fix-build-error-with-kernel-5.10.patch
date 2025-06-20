@@ -1,0 +1,27 @@
+From 907262e06cddb18390759a7ab9991f6dee08742a Mon Sep 17 00:00:00 2001
+From: Wily Taekhyun Shin <thshin@telechips.com>
+Date: Fri, 8 Mar 2024 18:16:58 +0900
+Subject: [PATCH] fix build error with kernel 5.10
+
+---
+ compatibility.h | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/compatibility.h b/compatibility.h
+index 06d7545..a53a582 100644
+--- a/compatibility.h
++++ b/compatibility.h
+@@ -688,10 +688,6 @@
+ #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,8,0) */
+ #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,9,0) */
+ #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,12,0) */
+-	static inline void eth_hw_addr_set(struct net_device *dev, const u8 *addr)
+-	{
+-		memcpy(dev->dev_addr, addr, 6);
+-	}
+ #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,15,0) */
+ #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,19,0) */
+ 
+-- 
+2.25.1
+

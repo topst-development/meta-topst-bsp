@@ -1,0 +1,79 @@
+From 9351f54d1c41f0917a3bd191b25496fb9641b8de Mon Sep 17 00:00:00 2001
+From: Peter Hutterer <peter.hutterer@who-t.net>
+Date: Fri, 27 Mar 2020 12:01:45 +1000
+Subject: [PATCH] Fix race condition causing duplicate devices in udev seats
+
+There is a race between adding the udev monitor and enumerating current
+devices. Any device added in that window will show up in both lists, causing
+it to be added twice.
+
+Fix this by comparing the syspath of any added device to the existin ones in
+the seat - where it matches we can ignore the device.
+
+Fixes #459
+
+Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+---
+ src/udev-seat.c | 39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
+
+diff --git a/src/udev-seat.c b/src/udev-seat.c
+index ce96ece..de78929 100644
+--- a/src/udev-seat.c
++++ b/src/udev-seat.c
+@@ -41,6 +41,38 @@ udev_seat_create(struct udev_input *input,
+ static struct udev_seat *
+ udev_seat_get_named(struct udev_input *input, const char *seat_name);
+ 
++
++static inline bool
++filter_duplicates(struct udev_seat *udev_seat,
++		  struct udev_device *udev_device)
++{
++	struct libinput_device *device;
++	const char *new_syspath = udev_device_get_syspath(udev_device);
++	bool ignore_device = false;
++
++	if (!udev_seat)
++		return false;
++
++	list_for_each(device, &udev_seat->base.devices_list, link) {
++		const char *syspath;
++		struct udev_device *ud;
++
++		ud = libinput_device_get_udev_device(device);
++		if (!ud)
++			continue;
++
++		syspath = udev_device_get_syspath(ud);
++		if (syspath && new_syspath && streq(syspath, new_syspath))
++			ignore_device = true;
++		udev_device_unref(ud);
++
++		if (ignore_device)
++			break;
++	}
++
++	return ignore_device;
++}
++
+ static int
+ device_added(struct udev_device *udev_device,
+ 	     struct udev_input *input,
+@@ -72,6 +104,13 @@ device_added(struct udev_device *udev_device,
+ 
+ 	seat = udev_seat_get_named(input, seat_name);
+ 
++	/* There is a race at startup: a device added between setting
++	 * up the udev monitor and enumerating all current devices may show
++	 * up in both lists. Filter those out.
++	 */
++	if (filter_duplicates(seat, udev_device))
++		return 0;
++
+ 	if (seat)
+ 		libinput_seat_ref(&seat->base);
+ 	else {
+-- 
+1.9.3
+

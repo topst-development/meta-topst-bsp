@@ -1,0 +1,44 @@
+From 033f984f4facd58e71ab5b416ba8602affef9467 Mon Sep 17 00:00:00 2001
+From: YoungJun <youngjun@telechips.com>
+Date: Fri, 26 May 2023 14:02:31 +0900
+Subject: [PATCH] [feat] dmabuf: add flags for yuv color space and range
+
+- Add flags to distinguish between color space and range when processing
+  YUV format. Up until now, it has been handling the color space
+  arbitrarily based on the size of the video, but now it can specify color
+  explicitly, allowing it to convert and render with the correct color.
+
+TCS : TMRCR-4679
+
+Change-Id: I9fe3d159aea99e6e820f49e31516b6cd96baf065
+---
+ unstable/linux-dmabuf/linux-dmabuf-unstable-v1.xml | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/unstable/linux-dmabuf/linux-dmabuf-unstable-v1.xml b/unstable/linux-dmabuf/linux-dmabuf-unstable-v1.xml
+index b43e81c..84303e9 100644
+--- a/unstable/linux-dmabuf/linux-dmabuf-unstable-v1.xml
++++ b/unstable/linux-dmabuf/linux-dmabuf-unstable-v1.xml
+@@ -229,6 +229,8 @@
+       <entry name="y_invert" value="1" summary="contents are y-inverted"/>
+       <entry name="interlaced" value="2" summary="content is interlaced"/>
+       <entry name="bottom_first" value="4" summary="bottom field first"/>
++      <entry name="color_bt709" value="8" summary="color space bt709"/>
++      <entry name="color_fullrange" value="16" summary="color range full"/>
+     </enum>
+ 
+     <request name="create">
+@@ -252,7 +254,9 @@
+         The top field always begins on the first pixel row. The temporal
+         ordering between the two fields is top field first, unless
+         'bottom_first' is specified. It is undefined whether 'bottom_first'
+-        is ignored if 'interlaced' is not set.
++        is ignored if 'interlaced' is not set. Set yuv hints via
++        'color_bt709' and 'color_fullrange' to distinguish between color
++        space and range.
+ 
+         This protocol does not convey any information about field rate,
+         duration, or timing, other than the relative ordering between the
+-- 
+2.25.1
+

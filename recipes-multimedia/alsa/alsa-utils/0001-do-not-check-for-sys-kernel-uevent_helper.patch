@@ -1,0 +1,33 @@
+From 23b9a5023b98083715d4423e372c2438aeaf4d5f Mon Sep 17 00:00:00 2001
+From: "Eunhee Kim (B120055)" <ehk23@telechips.com>
+Date: Tue, 16 Jan 2018 08:43:36 +0000
+Subject: [PATCH] do-not-check-for-sys-kernel-uevent_helper
+
+CONFIG_UEVENT_HELPER=y is depreacated and also not provided on fastboot mode of telechips
+kernels. Skip the test for it in alsactl.
+---
+ alsactl/init_sysfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/alsactl/init_sysfs.c b/alsactl/init_sysfs.c
+index 5c789b6..22741c4 100644
+--- a/alsactl/init_sysfs.c
++++ b/alsactl/init_sysfs.c
+@@ -43,12 +43,13 @@ static int sysfs_init(void)
+ 	dbg("sysfs_path='%s'", sysfs_path);
+ 
+ 	strlcpy(sysfs_test, sysfs_path, sizeof(sysfs_test));
++#if 0	// This is for fastboot mode.
+ 	strlcat(sysfs_test, "/kernel/uevent_helper", sizeof(sysfs_test));
+ 	if (access(sysfs_test, F_OK)) {
+ 		error("sysfs path '%s' is invalid\n", sysfs_path);
+ 		return -errno;
+ 	}
+-
++#endif
+ 	INIT_LIST_HEAD(&attr_list);
+ 	return 0;
+ }
+-- 
+2.9.3
+
