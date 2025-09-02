@@ -58,7 +58,7 @@ TCC_BSP_FEATURES:append:tcc807x = "${@bb.utils.contains('TOPST_FEATURES', 'multi
 
 TCC_BSP_FEATURES:append:tcc750x = "${@bb.utils.contains('TOPST_FEATURES', 'display', ' display', '', d)}"
 TCC_BSP_FEATURES:append:tcc750x = "${@bb.utils.contains('TOPST_FEATURES', 'camera', ' camera', '', d)}"
-TCC_BSP_FEATURES:append:tcc750x = "${@bb.utils.contains('TOPST_FEATURES', 'multimedia', ' multimedia', '', d)}"
+TCC_BSP_FEATURES:append:tcc750x = "${@bb.utils.contains('TOPST_FEATURES', 'multimedia', ' multimedia_vpu_v3', '', d)}"
 
 FWDN_VERSION = "8"
 DATA_PART_FSTYPE = "ext4"

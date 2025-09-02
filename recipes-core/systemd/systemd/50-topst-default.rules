@@ -1,0 +1,10 @@
+# Telechips Multi Media
+KERNEL=="viqe", GROUP="video"
+KERNEL=="vpu_*", GROUP="video"
+KERNEL=="video*", GROUP="video"
+KERNEL=="overlay*", GROUP="video"
+KERNEL=="scaler*", GROUP="video"
+KERNEL=="wdma*", GROUP="video"
+KERNEL=="wmixer*", GROUP="video"
+KERNEL=="tcc_lut*", GROUP="video"
+KERNEL=="tcc_dptx_audio", GROUP="video"

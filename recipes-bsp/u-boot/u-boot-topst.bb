@@ -8,6 +8,7 @@ LIC_FILES_CHKSUM = "file://Licenses/README;md5=5a7450c57ffe5ae63fd732446b988025"
 
 SRC_URI = "${TELECHIPS_TOPST_GIT}/u-boot.git;protocol=${TOPST_GIT_PROTOCOL};branch=${TOPST_BRANCH}"
 SRC_URI += "${@bb.utils.contains('IMAGE_FEATURES', 'uboot-fit', 'file://fit.cfg', '', d)}"
+SRC_URI += "${@bb.utils.contains('IMAGE_FEATURES', 'uboot-net', 'file://boot-net.cfg', '', d)}"
 
 TOPST_BRANCH:tcc805x = "release/d3/1.0.0"
 TOPST_BRANCH:tcc750x = "release/ai/1.0.0"
