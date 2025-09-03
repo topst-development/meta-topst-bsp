@@ -63,6 +63,14 @@ python __anonymous() {
         if tcc_arch_family == 'tcc805x':
             src_uri.append('file://camera.cfg')
 
+    if 'multimedia' in bsp_features:
+        src_uri.append('file://multimedia.cfg')
+
+    if 'multimedia_vpu_v3' in bsp_features:
+        src_uri.append('file://multimedia_vpu_v3.cfg')
+        src_uri.append('file://tccv4l2encoder.cfg')
+        src_uri.append('file://tccv4l2decoder.cfg')
+
     if 'with-subcore' in bsp_features:
         if 'gpu-vz' in bsp_features:
             src_uri.append('file://gpu-vz.cfg')
@@ -133,6 +141,9 @@ FILES:${KERNEL_PACKAGE_NAME}-modules += " \
 	/lib/modules/${KERNEL_VERSION}/modules.builtin \
 	/lib/modules/${KERNEL_VERSION}/modules.order \
 "
+
+RDEPENDS:kernel-modules += "${@bb.utils.contains('TCC_BSP_FEATURES', 'multimedia', 'kernel-modules-vpu', '', d)}"
+RDEPENDS:kernel-modules += "${@bb.utils.contains('TCC_BSP_FEATURES', 'multimedia_vpu_v3', 'kernel-modules-vpu', '', d)}"
 
 # disable unneeded tasks
 do_uboot_mkimage[noexec] = "1"
