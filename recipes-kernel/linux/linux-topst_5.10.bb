@@ -12,8 +12,8 @@ SRC_URI:append:tcc750x = " \
 	file://expand-cma-512mb.cfg \
 "
 SRC_URI:append:tcc805x = " \
-        file://pcie-host_d3.cfg \
-        file://pcie-sata.cfg \
+	file://pcie-host_d3.cfg \
+	file://pcie-sata.cfg \
 	file://pwm.cfg \
 "
 

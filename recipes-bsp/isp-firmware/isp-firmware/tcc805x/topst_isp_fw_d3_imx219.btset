@@ -1,4 +1,4 @@
-// **!! ONLY TOPST(ND)+OV5647 !!** //
+// **!! ONLY TOPST(D3-G)+IMX219 !!** //
 
 ////////////////////////////////////////////////////////////////////////////////
 //TOPST_ISP FW 
@@ -22,31 +22,37 @@ btw0x00000000
 //TOPST_ISP HW 
 ////////////////////////////////////////////////////////////////////////////////
 
+btp0x0001
+bta0x0020
+btw0x00000000 //format
+
 ID 82
 btp0x0000
 bta0x0044
 btw0x02000000  //update function
 
-// Window  (1Page 0x000~0x03C same to D3) 
+// Window 
 btp0x0001
 bta0x0000
-// bayer Channel Gain  (1Page 0x300~0x310 same to D3)
+
+// bayer Channel Gain
 bta0x0300
-btw0x00010004    //Bayer channel
-btw0x00080006
-btw0x00030040
+btw0x00F10022    //Bayer channel
+btw0x00000000
+btw0x00120040
 btw0x00400040
 btw0x00400000
 
-// AWB Gain  (1Page 0x400~0x404 same to D3)
+// AWB Gain
 bta0x0400
-btw0x00010138	// r
-btw0x00D00120	// b/g
+btw0x0001010F	// r
+btw0x00A90118	// b/g
 
-// AE Gain  (1Page 0x500 same to D3)
+// AE Gain
 bta0x0500
-btw0x00010200
-// bayer curve (1page 0x800~828 same to D3)
+btw0x000101F4
+
+// bayer curve
 bta0x0800
 btw0x00010000    //Bayer Curve
 btw0x000E002D
@@ -64,27 +70,28 @@ btw0x03690000
 bta0x0900
 btw0x00000000    //LSC off
 
-// DPC (1Page 0x0A00 same to D3)
+// DPC
 bta0x0A00
 btw0x00010000
 
-// GbGr (1Page 0x0A10~0x0A14 same to D3)
+// GbGr
 bta0x0A10
 btw0x00000000
 btw0x00000000
 
-// Pre-Bayer NR (1Page 0x0A30~0x0A34 same to D3)
+// Pre-Bayer NR
 bta0x0A30
 btw0x00010000
 btw0x00000000
 
-// Post-Bayer NR (1Page 0x0A80~0x0A8C same to D3)
+// Post-Bayer NR
 bta0x0A80
 btw0x00033020
 btw0x80FF2040
 btw0x0010E0FF
 btw0x70A00020
-// RGB NR (2Page 0x0000~0x0014 same to D3)
+
+// RGB NR
 btp0x0002
 bta0x0000
 btw0x00074040    //RGB NR
@@ -94,7 +101,7 @@ btw0x10101010
 btw0x10101010
 btw0x10100010
 
-// Y NR (2Page 0x0070 ~ 0x0084)
+// Y NR
 bta0x0070
 btw0x0001FF05
 btw0x00C00F08
@@ -103,14 +110,15 @@ btw0x08080808
 btw0x1A1A1A1A
 btw0x1A1A1A1A
 
-// C NR (2Page 0x00B8 ~ 0x00C8 same to D3)
+// C NR
 bta0x00B8
 btw0x00000000
 btw0x1F087F00
 btw0x00230508
 btw0x08080808
-btw0x08080808 
-// Pre-Bayer Sharpness (0x1A50 ~ 0x1A5C same to D3)
+btw0x08080808
+
+// Pre-Bayer Sharpness
 btp0x0001
 bta0x0A50
 btw0x00011014
@@ -119,7 +127,7 @@ btw0xFFFF00FF
 btw0x0FFFFFFF
 btw0x5A3A000A
 
-// Post-Bayer Sharpness (0x1AB0 ~ 0x1AB8 same to D3)
+// Post-Bayer Sharpness
 bta0x0AB0
 btw0x00011014
 btw0x0018FFFF    
@@ -127,7 +135,7 @@ btw0xFFFF00FF
 btw0x0400200F
 btw0x5A340000
 
-// RGB Sharpness (0x2040 ~ 0x2054 same to D3)
+// RGB Sharpness
 btp0x0002
 bta0x0040
 btw0x10012020    //RGB Sharpness
@@ -140,46 +148,55 @@ btw0x40404040
 btw0x4F4C0050
 btw0x207F0020
 
-// Y Sharpness  (0x20E0 ~ 0x20F4 same to D3)
+// Y Sharpness
 bta0x00E0
-btw0x3F010003
-btw0x04044020
+btw0x3F010000
+btw0x1e20e7d3
+btw0x78783B3C
+btw0x292D4020
 btw0x6050384B
-btw0x20304020
-btw0x6050384B
-btw0x20308080
+btw0x20300000
 btw0x80800080
 btw0x80808080
 btw0x0080007F
-// RGB Color Correction Matrix (0x2500~0x2510 same to D3)
+
+// RGB Color Correction Matrix
 bta0x0500
 btw0x007f0180
 btw0x007C0002
 btw0x00660180
 btw0x00190033
 btw0x004C0180
-// YUV Saturation Control (0x2600~0x260C same to D3)
+
+// YUV Saturation Control
 bta0x0600
-btw0x0001006A  //Saturation cb
-btw0x0060312C  //Saturation cr
+btw0x00010074  //Saturation cb
+btw0x0074312C  //Saturation cr
 btw0x35353535
 btw0x00000103
 
-// RGB Multi-Color Enhancement (0x2700~0x2724 same to D3)
+// Contrast
+bta0x00A8
+btw0x00012E09
+btw0x22000000
+
+// RGB Multi-Color Enhancement
 bta0x0700
 btw0x000F0000  //MCCM
-btw0x00320000
 btw0x00000000
 btw0x00000000
 btw0x00000000
 btw0x00000000
 btw0x00000000
+btw0x000001C0
 btw0x00000000
 btw0x00000000
-btw0x00000001
+btw0x00000003
+btw0xFF01801E
+
 btp0x0000
 bta0x0060
 bta0xFFFB0000 //interrupt enable for MCU
 
 bta0x0030
-btw0xFFFFFFFF	// register update same to D3
+btw0xFFFFFFFF

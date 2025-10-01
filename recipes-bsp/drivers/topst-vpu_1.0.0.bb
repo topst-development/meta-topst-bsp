@@ -35,17 +35,22 @@ do_install() {
     install -d ${D}${sysconfdir}/modules-load.d
     install -d ${D}${nonarch_base_libdir}/firmware
 
-	install -m 0644 ${WORKDIR}/build/vpu_4k_d2/vpu_4k_d2_lib.ko			${VPU_INSTALL_DIR}/vpu_4k_d2_lib.ko
-	install -m 0644 ${WORKDIR}/build/vpu_hevc_enc/vpu_hevc_enc_lib.ko       ${VPU_INSTALL_DIR}/vpu_hevc_enc_lib.ko
+	if ${@bb.utils.contains('TCC_ARCH_FAMILY', 'tcc805x', 'true', 'false', d)}; then
+		install -m 0644 ${WORKDIR}/build/vpu_c7/vpu_lib.ko				${VPU_INSTALL_DIR}/vpu_c7_lib.ko
+		install -m 0644 ${WORKDIR}/build/vpu_4k_d2/vpu_4k_d2_lib.ko		${VPU_INSTALL_DIR}/vpu_4k_d2_lib.ko
+		install -m 0644 ${S}/firmware/vpu_c7.bin						${D}${nonarch_base_libdir}/firmware/
+		install -m 0644 ${S}/firmware/vpu4k_d2.bin						${D}${nonarch_base_libdir}/firmware/
+	fi
 
-	install -m 0644 ${S}/firmware/vpu4k_d2.bin ${D}${nonarch_base_libdir}/firmware/
-	install -m 0644 ${S}/firmware/hevc_e3.bin  ${D}${nonarch_base_libdir}/firmware/
-
-	install -m 0644 ${WORKDIR}/00.vpu-lib.conf ${D}${sysconfdir}/modules-load.d/
+	install -m 0644 ${WORKDIR}/build/vpu_hevc_enc/vpu_hevc_enc_lib.ko	${VPU_INSTALL_DIR}/vpu_hevc_enc_lib.ko
+	install -m 0644 ${S}/firmware/hevc_e3.bin							${D}${nonarch_base_libdir}/firmware/
+	install -m 0644 ${WORKDIR}/00.vpu-lib.conf							${D}${sysconfdir}/modules-load.d/
 }
 
-FILES:${PN} += "${sysconfdir}/modules-load.d/00.vpu-lib.conf"
-FILES:${PN} += " ${nonarch_base_libdir}/firmware"
-RPROVIDES:${PN} += "kernel-modules-vpu"
+FILES:${PN} += " \
+	${sysconfdir}/modules-load.d/00.vpu-lib.conf \
+	${nonarch_base_libdir}/firmware \
+"
 
+RPROVIDES:${PN} += "kernel-modules-vpu"
 OECMAKE_GENERATOR = "Unix Makefiles"
