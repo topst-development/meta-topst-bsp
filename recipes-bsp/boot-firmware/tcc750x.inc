@@ -1,6 +1,6 @@
 SRC_URI:append = ""
 
-SRCREV = "${AUTOREV}"
+SRCREV = "e4d14bd6dc498ff9451f0df8ae07f7572ca76387"
 
 do_install() {
     install -d ${D}/boot-firmware

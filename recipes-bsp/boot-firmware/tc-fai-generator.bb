@@ -6,7 +6,7 @@ SECTION = "bsp"
 inherit native
 
 SRC_URI = "${TELECHIPS_TOPST_GIT}/mktcimg.git;protocol=${TOPST_GIT_PROTOCOL};branch=${TOPST_BRANCH}"
-SRCREV = "${AUTOREV}"
+SRCREV = "0fbbb075788b54f1f94ca7ff3e701f2a0e716700"
 
 S = "${WORKDIR}/git"
 

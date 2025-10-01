@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${THISDIR}/../../licenses/Telechips;md5=bf748a8e7a397
 
 # Download hsm_test code through git url
 SRC_URI = "${TELECHIPS_TOPST_GIT}/hsm.git;protocol=${TOPST_GIT_PROTOCOL};branch=${TOPST_BRANCH}"
-SRCREV = "${AUTOREV}"
+SRCREV = "4c4900e16a320c06493f3d1cadc058c4d3fdd5e4"
 
 do_compile[noexec] = "1"
 

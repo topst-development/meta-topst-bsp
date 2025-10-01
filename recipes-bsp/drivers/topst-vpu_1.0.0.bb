@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://${THISDIR}/../../licenses/Telechips;md5=bf748a8e7a397
 inherit module cmake
 
 SRC_URI = "${TELECHIPS_TOPST_GIT}/vpu-kernel-library.git;protocol=${TOPST_GIT_PROTOCOL};branch=${TOPST_BRANCH}"
-SRCREV = "${AUTOREV}"
+SRCREV = "0d0ad44d16ac526d979a85af5f5234ae6ce99ceb"
 
 SRC_URI += " file://00.vpu-lib.conf "
 
