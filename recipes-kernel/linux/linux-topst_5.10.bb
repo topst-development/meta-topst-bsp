@@ -17,10 +17,10 @@ SRC_URI:append:tcc805x = " \
 	file://pwm.cfg \
 "
 
-TOPST_BRANCH:tcc805x = "release/d3/2.0.0"
-TOPST_BRANCH:tcc750x = "release/ai/1.0.0"
-SRCREV:tcc805x = "10acd562a1a69f35ff904572642cde014fd832ec"
-SRCREV:tcc750x = "7cd0622ce188fcd3204f5af4680edff442f0edd7"
+TOPST_BRANCH:tcc805x = "develop/d3"
+TOPST_BRANCH:tcc750x = "develop/d3"
+SRCREV:tcc805x = "${AUTOREV}"
+SRCREV:tcc750x = "${AUTOREV}"
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 

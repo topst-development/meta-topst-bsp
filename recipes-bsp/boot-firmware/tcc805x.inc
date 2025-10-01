@@ -1,6 +1,6 @@
 SRC_URI:append = " file://micom.cfg"
 
-SRCREV = "01e25d35b39684235328df3222d9edc5d05c1bd5"
+SRCREV = "${AUTOREV}"
 
 do_install() {
 	install -d ${D}/boot-firmware

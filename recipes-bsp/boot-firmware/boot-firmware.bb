@@ -13,8 +13,8 @@ CHIP_PATH = "${@d.getVar("MACHINE").split("-")[0]}"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 SRC_URI = "${TELECHIPS_TOPST_GIT}/boot-firmware.git;protocol=${TOPST_GIT_PROTOCOL};branch=${TOPST_BRANCH}"
-TOPST_BRANCH:tcc805x ??= "release/d3/1.0.0"
-TOPST_BRANCH:tcc750x ??= "release/ai/1.0.0"
+TOPST_BRANCH:tcc805x ??= "develop/d3"
+TOPST_BRANCH:tcc750x ??= "develop/ai"
 
 S = "${WORKDIR}/git"
 PATCHTOOL = "git"

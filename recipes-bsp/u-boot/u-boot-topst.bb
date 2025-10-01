@@ -10,10 +10,10 @@ SRC_URI = "${TELECHIPS_TOPST_GIT}/u-boot.git;protocol=${TOPST_GIT_PROTOCOL};bran
 SRC_URI += "${@bb.utils.contains('IMAGE_FEATURES', 'uboot-fit', 'file://fit.cfg', '', d)}"
 SRC_URI += "${@bb.utils.contains('IMAGE_FEATURES', 'uboot-net', 'file://boot-net.cfg', '', d)}"
 
-TOPST_BRANCH:tcc805x = "release/d3/1.0.0"
-TOPST_BRANCH:tcc750x = "release/ai/1.0.0"
-SRCREV:tcc805x = "c27b22e448222d97f95720e3b655549b78b58eeb"
-SRCREV:tcc750x = "d9d5777b956a73c8a07f32a8f6d3e06c3d330e18"
+TOPST_BRANCH:tcc805x = "develop/d3"
+TOPST_BRANCH:tcc750x = "develop/ai"
+SRCREV:tcc805x = "${AUTOREV}"
+SRCREV:tcc750x = "${AUTOREV}"
 
 require recipes-bsp/u-boot/u-boot.inc
 
