@@ -136,16 +136,16 @@ do_install() {
 
 		# Install pre-built libraries
 		mv ${D}${libdir}/libVK_IMG.so ${D}${libdir}/libVK_IMG.so.1.2.170
-		mv ${D}${libdir}/libvulkan.so ${D}${libdir}/libvulkan.so.1.2.170
+		mv ${D}${libdir}/libvulkan.so ${D}${libdir}/libvulkan.so.1.3.204
 
 		ln -sf libVK_IMG.so.1.2.170		${D}${libdir}/libVK_IMG.so.1
 		ln -sf libVK_IMG.so.1		${D}${libdir}/libVK_IMG.so
-		ln -sf libvulkan.so.1.2.170		${D}${libdir}/libvulkan.so.1
+		ln -sf libvulkan.so.1.3.204		${D}${libdir}/libvulkan.so.1
 		ln -sf libvulkan.so.1		${D}${libdir}/libvulkan.so.0
 		ln -sf libvulkan.so.1		${D}${libdir}/libvulkan.so
 
-		ln -sf libvulkan.so.1.2.170		${D}${libdir}/libvulkan-1.so.1.2.170
-		ln -sf libvulkan-1.so.1.2.170		${D}${libdir}/libvulkan-1.so.1
+		ln -sf libvulkan.so.1.3.204		${D}${libdir}/libvulkan-1.so.1.3.204
+		ln -sf libvulkan-1.so.1.3.204		${D}${libdir}/libvulkan-1.so.1
 		ln -sf libvulkan-1.so.1		${D}${libdir}/libvulkan-1.so
 	else
 		rm -rf ${D}${libdir}/libVK_IMG.so ${D}${libdir}/libvulkan.so

@@ -1,0 +1,20 @@
+--- a/main.c	2026-01-05 09:38:21.276161917 +0900
++++ b/main.c	2026-01-05 09:38:50.481063983 +0900
+@@ -990,7 +990,7 @@
+ 
+          uint32_t index;
+          VkResult result;
+-         result = vkAcquireNextImageKHR(vc->device, vc->swap_chain, 60,
++         result = vkAcquireNextImageKHR(vc->device, vc->swap_chain, UINT64_MAX,
+                                         vc->semaphore, VK_NULL_HANDLE, &index);
+          switch (result) {
+          case VK_SUCCESS:
+@@ -1285,7 +1285,7 @@
+          wl_display_cancel_read(vc->wl.display);
+       }
+ 
+-      result = vkAcquireNextImageKHR(vc->device, vc->swap_chain, 60,
++      result = vkAcquireNextImageKHR(vc->device, vc->swap_chain, UINT64_MAX,
+                                      vc->semaphore, VK_NULL_HANDLE, &index);
+       if (result == VK_SUBOPTIMAL_KHR) {
+          recreate_swapchain(vc);
